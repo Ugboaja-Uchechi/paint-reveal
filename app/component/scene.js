@@ -6,6 +6,15 @@ export default function Scene() {
   const { dimension } = useWindow();
   const canvas = useRef();
 
+  const prevPosition = useRef(null);
+
+  //Linear interpolation is a key concept in animations.
+  //it is a form of interpolation, which involves the generation of new values based on an existing set of values
+  //x: The value we want to interpolate from (start)
+  //y: The target value we want to interpolate to (end)
+  //a: The amount by which we want x to be closer to y.
+  const lerp = (x, y, a) => x * (1 - a) + y * a;
+
   useEffect(() => {
     dimension.width > 0 && init();
   }, [dimension])
@@ -19,23 +28,23 @@ export default function Scene() {
   };
 
   const manageMouseMove = (e) => {
-    const { clientX, clientY } = e;
+    const { clientX, clientY, movementX, movementY } = e;
 
     const nbOfCircles = Math.max(Math.abs(movementX), Math.abs(movementY)) / 10;
 
-    if(prevPosition.current != null){
+    if (prevPosition.current != null) {
       const { x, y } = prevPosition.current;
-  
-      for(let i = 0 ; i < nbOfCircles ; i++){
-  
+
+      for (let i = 0; i < nbOfCircles; i++) {
+
         const targetX = lerp(x, clientX, (1 / nbOfCircles) * i);
-  
+
         const targetY = lerp(y, clientY, (1 / nbOfCircles) * i);
-  
+
         draw(targetX, targetY, 50)
       }
     }
-  
+
     prevPosition.current = {
       x: clientX,
       y: clientY
