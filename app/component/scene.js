@@ -21,7 +21,25 @@ export default function Scene() {
   const manageMouseMove = (e) => {
     const { clientX, clientY } = e;
 
-    draw(clientX, clientY, 50)
+    const nbOfCircles = Math.max(Math.abs(movementX), Math.abs(movementY)) / 10;
+
+    if(prevPosition.current != null){
+      const { x, y } = prevPosition.current;
+  
+      for(let i = 0 ; i < nbOfCircles ; i++){
+  
+        const targetX = lerp(x, clientX, (1 / nbOfCircles) * i);
+  
+        const targetY = lerp(y, clientY, (1 / nbOfCircles) * i);
+  
+        draw(targetX, targetY, 50)
+      }
+    }
+  
+    prevPosition.current = {
+      x: clientX,
+      y: clientY
+    }
   };
 
   const draw = (x, y, radius) => {
