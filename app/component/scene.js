@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useRef } from 'react'
 import useWindow from './useWindow'
+import "../../app/globals.css";
 
 export default function Scene() {
   const { dimension } = useWindow();
