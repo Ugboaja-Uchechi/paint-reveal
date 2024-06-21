@@ -5,6 +5,7 @@ import "../../app/globals.css";
 
 export default function Scene() {
   const { dimension } = useWindow();
+  //created a reference to target the canvas
   const canvas = useRef();
 
   const prevPosition = useRef(null);
@@ -19,20 +20,24 @@ export default function Scene() {
   useEffect(() => {
     dimension.width > 0 && init();
   }, [dimension])
+  
 
   const init = () => {
     const ctx = canvas.current.getContext("2d");
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, dimension.width, dimension.height);
     //the destination-out global composite operation is used on the canvas so that every time we draw additional shapes on the canvas, it will erase the black rectangle used as a background.
+    // try xor instead of destination-out really cool
     ctx.globalCompositeOperation = "destination-out";
   };
 
   const manageMouseMove = (e) => {
     const { clientX, clientY, movementX, movementY } = e;
 
+    //makes the circles erasing smoother
     const nbOfCircles = Math.max(Math.abs(movementX), Math.abs(movementY)) / 10;
 
+    // we are checking if there is a previous position of the mouse and then we're drawing circles and a bunch of circles between eachother
     if (prevPosition.current != null) {
       const { x, y } = prevPosition.current;
 
@@ -64,8 +69,9 @@ export default function Scene() {
 
   return (
     <div className='relative w-full h-full'>
+      {/* displays on the 1st render */}
       {dimension.width == 0 && <div className='absolute w-full h-full bg-black' />}
-      <canvas ref={canvas} height={dimension.height} width={dimension.width} onMouseMove={manageMouseMove} />
+      <canvas ref={canvas} height={dimension.height} width={dimension.width} onMouseMove={manageMouseMove} onTouchMove={manageMouseMove} />
     </div>
   )
 }

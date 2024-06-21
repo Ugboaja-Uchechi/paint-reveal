@@ -7,8 +7,8 @@ export default function Text() {
     <div className="absolute flex flex-col text-[5.5vw] uppercase w-[80vw] items-start leading-tight">
       <p>Stephanie Ugboaja</p>
       <p className="self-end">Front End Developer</p>
-      <Link href="">Reach Out</Link>
-      <Link className="self-end" href="https://tired-coder.vercel.app/" target='blank'>Portfolio</Link>
+      <p>Creative Coding</p>
+      {/* <p className="self-end">Portfolio@2024</p> */}
     </div>
   )
 }
