@@ -20,7 +20,7 @@ export default function Scene() {
   useEffect(() => {
     dimension.width > 0 && init();
   }, [dimension])
-  
+
 
   const init = () => {
     const ctx = canvas.current.getContext("2d");
@@ -32,7 +32,29 @@ export default function Scene() {
   };
 
   const manageMouseMove = (e) => {
-    const { clientX, clientY, movementX, movementY } = e;
+    // const { clientX, clientY, movementX, movementY } = e;
+
+
+    //mobile start
+    // When it's a touch event, get the position from first touch point
+    let clientX = e.clientX, clientY = e.clientY;
+    let movementX = e.movementX, movementY = e.movementY;
+
+    if (e.type === 'touchmove') {
+      e.preventDefault(); // Prevent scrolling when touching the canvas
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+
+      // Calculate movementX and movementY for touch events
+      if (prevPosition.current) {
+        movementX = clientX - prevPosition.current.x;
+        movementY = clientY - prevPosition.current.y;
+      } else {
+        movementX = 0;
+        movementY = 0;
+      }
+    }
+    //mobile end
 
     //makes the circles erasing smoother
     const nbOfCircles = Math.max(Math.abs(movementX), Math.abs(movementY)) / 10;
